@@ -10,7 +10,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import Loading from '../components/CircularLoading'
+import LazyLoad from 'react-lazyload';
+import { CircularLoading } from '../components'
 
 const useStyles = makeStyles({
   card: {
@@ -32,43 +33,49 @@ function ImgMediaCard(props) {
   const classname = classNames(classes.card, classes.my);
 
   return (
-    news ?
     <Card className={ classname }>
-      <CardActionArea>
-        { 
-          multimedia &&
-          <CardMedia
-            component="img"
-            alt="Contemplative Reptile"
-            height="300"
-            image={ multimedia[3].url }
-            title="Contemplative Reptile"
-          />
+      <LazyLoad
+        placeholder={
+          <Grid
+            container
+            justify="center"
+          >
+            <CircularLoading />
+          </Grid>
         }
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            { news.title }
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            { news.abstract }
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <a href={ news.url }>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </a>
-      </CardActions>
+      >
+        <CardActionArea>
+          { 
+            ((multimedia && typeof multimedia === 'string') || (multimedia.length > 0 && typeof multimedia === 'object')) &&
+            <CardMedia
+              component="img"
+              alt={news.title}
+              height="300"
+              image={multimedia[3] ? multimedia[3].url : multimedia[0].url}
+              title="Contemplative Reptile"
+            />
+          }
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {news.title}
+            </Typography>
+            <Typography variant="caption" color="textSecondary" component="p">
+              {(new Date(news.published_date)).toString()}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {news.abstract}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <a href={news.url}>
+            <Button size="small" color="primary">
+              Learn More
+            </Button>
+          </a>
+        </CardActions> 
+      </LazyLoad>
     </Card>
-    :
-    <Grid
-      container
-      justify="center"
-    >
-      <Loading />
-    </Grid>
   )
 }
 

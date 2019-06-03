@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +10,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import indigo from '@material-ui/core/colors/indigo';
 
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 const theme = createMuiTheme({
   palette: {
@@ -21,6 +21,9 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
+  submit: {
+    display: 'none',
+  },
   link: {
     color: 'black',
   },
@@ -76,8 +79,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SearchAppBar() {
+function Navbar(props) {
   const classes = useStyles();
+  const [searchForm, setSearchForm] = useState({
+    search: ''
+  });
+
+  function goToHome(e) {
+    e.preventDefault();
+    props.history.push('/');
+    props.search('');
+  }
+
+  function submitSearch(e) {
+    e.preventDefault();
+    props.history.push('/');
+    props.search(searchForm.search);
+  }
+
+  function handleChange(e) {
+    setSearchForm({
+      [e.target.id]: e.target.value
+    })
+  }
 
   return (
     <div className={classes.root}>
@@ -87,29 +111,37 @@ function SearchAppBar() {
             <Typography className={classes.title} variant="h6" noWrap>
               What's??Now.
             </Typography>
-            <Link className={classes.link} to="/">
-              <Button color="inherit">Home</Button>
+            <Button onClick={goToHome} color="inherit">News</Button>
+            {/* <Link className={classes.link} to="/">
+              <Button color="inherit">News</Button>
+            </Link> */}
+            <Link className={classes.link} to="/minjoy">
+              <Button color="inherit">5minJoy</Button>
             </Link>
-            <Link className={classes.link} to="/about">
-              <Button color="inherit">About</Button>
-            </Link>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+            <form onSubmit={submitSearch}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search News"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  id="search"
+                  value={searchForm.search}
+                  onChange={handleChange}
+                />
+                <Button type="submit" variant="outlined">Go</Button>              
               </div>
-              <InputBase
-                placeholder="Search"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-            </div>
+            </form>
           </Toolbar>
         </AppBar>
       </ThemeProvider>
     </div>
-  );
+  )
 }
 
-export default SearchAppBar;
+// export default Navbar;
+export default withRouter(Navbar);

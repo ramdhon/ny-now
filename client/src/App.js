@@ -1,24 +1,65 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import Home from './views/Home'
-import About from './views/About'
+import { connect, Provider } from 'react-redux'
+import store from './store'
 
-import Navbar from './components/Navbar'
+import Home from './views/Home'
+import MinJoy from './views/MinJoy'
+
+import { Navbar, LinearLoading } from './components'
+
+import RootCom from './Root';
+
+
+// class Root extends Component {
+//   state = {
+//     search: ''
+//   }
+
+//   search = (search) => {
+//     this.setState({
+//       search
+//     })
+//   }
+
+//   render () {
+//     return (
+//       <Router>
+//         <Navbar search={this.search} />
+//         {
+//           this.props.isLoading &&
+//           <LinearLoading />
+//         }
+  
+//         <Switch>
+//           <Route path="/" exact component={() => (<Home search={this.state.search} />)} />
+//           <Route path="/minjoy" component={MinJoy} />
+//         </Switch>
+//       </Router>
+//     )
+//   }
+// }
+
+// const mapStateToProps = (state) => {
+//   const { isLoading } = state;
+
+//   return {
+//     isLoading
+//   }
+// }
+
+// connect(mapStateToProps)(Root);
+// const RootCom = connect(mapStateToProps)(Root);
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <Navbar />
-
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-        </Switch>
-      </Router>
+      <Provider store={store}>
+        <RootCom />
+      </Provider>
     )
   }
 }
 
-export default App
+export default App;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Container from '@material-ui/core/Container';
 import axios from 'axios'
+import noFound from '../assets/404.png'
 
 import { connect } from 'react-redux';
 import { setLoading } from '../store/action';
@@ -70,28 +71,48 @@ class Home extends Component {
       })
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
     const { search } = this.props;
-    if (!search) {
-      this.fetchNews();
-    } else {
-      this.searchNews(search);
+    
+    if (prevProps.search !== search) {
+      if (!search) {
+        this.fetchNews();
+      } else {
+        this.searchNews(search);
+      }
     }
+  }
+  
+  componentDidMount() {
+    this.fetchNews();
   }
 
   render() {
     return (
       <Container maxWidth="sm" style={{ paddingTop: '30px' }}>
         {
-          this.state.listNews.length === 0
+          (this.state.listNews.length === 0 && !this.props.isLoading)
           ?
           <Grid
             container
             justify="center"
           >
-            <Typography gutterBottom variant="h5" color="textSecondary" component="h2">
-              Not found
-            </Typography>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+            >
+              <img src={noFound} width="300px" alt="noFound" />
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+            >
+              <Typography gutterBottom variant="h5" color="textSecondary" component="h2">
+                Not found
+              </Typography>
+            </Grid>
           </Grid>
           :
           this.state.listNews.map((news, index) => {
@@ -106,8 +127,10 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const { isLoading } = state;
+
   return {
-    
+    isLoading
   }
 }
 
@@ -115,6 +138,4 @@ const mapDispatchToProps = {
   setLoading
 }
 
-// connect(mapStateToProps, mapDispatchToProps)(Home);
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
-// export default Home;

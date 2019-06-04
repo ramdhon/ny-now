@@ -28,7 +28,7 @@ class Root extends Component {
         }
   
         <Switch>
-          <Route path="/" exact component={() => (<Home search={this.state.search} />)} />
+          <Route path="/" exact render={(props) => (<Home {...props} search={this.state.search} />)} />
           <Route path="/minjoy" component={MinJoy} />
         </Switch>
       </Router>
@@ -40,8 +40,12 @@ const mapStateToProps = (state) => {
   const { isLoading } = state;
 
   return {
-    isLoading
+    isLoading: isLoading
   }
 }
 
-export default connect(mapStateToProps)(Root);
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

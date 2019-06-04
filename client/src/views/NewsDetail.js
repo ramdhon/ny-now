@@ -7,7 +7,7 @@ class NewsDetail extends Component {
     const { url } = this.props;
 
     return (
-      <iframe title="news" style={{width:"99.7%", height:"87.7vh"}} src={url}>
+      <iframe is="x-frame-bypass" title="news" style={{width:"99.7%", height:"87.7vh"}} src={url}>
         Browser is not supported the frame yet
       </iframe>
     )

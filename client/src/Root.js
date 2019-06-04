@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Home from './views/Home'
-import MinJoy from './views/MinJoy'
+import NewsDetail from './views/NewsDetail'
 
 import { Navbar, LinearLoading } from './components'
 
@@ -29,7 +29,7 @@ class Root extends Component {
   
         <Switch>
           <Route path="/" exact render={(props) => (<Home {...props} search={this.state.search} />)} />
-          <Route path="/minjoy" component={MinJoy} />
+          <Route path="/news-detail" component={NewsDetail} />
         </Switch>
       </Router>
     )

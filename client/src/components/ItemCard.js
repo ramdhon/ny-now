@@ -13,6 +13,11 @@ import Grid from '@material-ui/core/Grid';
 import LazyLoad from 'react-lazyload';
 import { CircularLoading } from '../components'
 
+import { withRouter } from 'react-router-dom'
+
+import { connect } from 'react-redux';
+import { setUrl } from '../store/action';
+
 const useStyles = makeStyles({
   card: {
     maxWidth: "100%",
@@ -32,6 +37,11 @@ function ImgMediaCard(props) {
   const { multimedia } = news;
   const classname = classNames(classes.card, classes.my);
 
+  function goToDetail() {
+    props.history.push('/news-detail');
+    props.setUrl(news.url);
+  }
+
   return (
     <Card className={ classname }>
       <LazyLoad
@@ -44,7 +54,7 @@ function ImgMediaCard(props) {
           </Grid>
         }
       >
-        <CardActionArea>
+        <CardActionArea onClick={goToDetail}>
           { 
             ((multimedia && typeof multimedia === 'string') || (multimedia.length > 0 && typeof multimedia === 'object')) &&
             <CardMedia
@@ -52,7 +62,7 @@ function ImgMediaCard(props) {
               alt={news.title}
               height="300"
               image={multimedia[3] ? multimedia[3].url : multimedia[0].url}
-              title="Contemplative Reptile"
+              title="news media"
             />
           }
           <CardContent>
@@ -68,15 +78,25 @@ function ImgMediaCard(props) {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <a href={news.url}>
-            <Button size="small" color="primary">
+          {/* <a href={news.url}> */}
+            <Button onClick={goToDetail} size="small" color="primary">
               Learn More
             </Button>
-          </a>
+          {/* </a> */}
         </CardActions> 
       </LazyLoad>
     </Card>
   )
 }
 
-export default ImgMediaCard;
+const mapStateToProps = (state) => {
+  return {
+    
+  }
+}
+
+const mapDispatchToProps = {
+  setUrl
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ImgMediaCard));

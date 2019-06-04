@@ -10,7 +10,10 @@ import { ThemeProvider } from '@material-ui/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import indigo from '@material-ui/core/colors/indigo';
 
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+
+import { connect } from 'react-redux';
+import { setUrl } from '../store/action';
 
 const theme = createMuiTheme({
   palette: {
@@ -91,6 +94,12 @@ function Navbar(props) {
     props.search('');
   }
 
+  function goToRead(e) {
+    e.preventDefault();
+    props.history.push('/news-detail');
+    props.setUrl('https://www.nytimes.com');
+  }
+
   function submitSearch(e) {
     e.preventDefault();
     props.history.push('/');
@@ -108,16 +117,18 @@ function Navbar(props) {
       <ThemeProvider theme={theme}>
         <AppBar color="primary" position="static">
           <Toolbar>
+            <img height="50" src="http://24.media.tumblr.com/01e553cdd88060f6df46f6317fa9de02/tumblr_mgnju9MaKh1qdri4so1_500.gif" alt="nyt" />
             <Typography className={classes.title} variant="h6" noWrap>
-              What's??Now.
+              Now.
             </Typography>
             <Button onClick={goToHome} color="inherit">News</Button>
+            <Button onClick={goToRead} color="inherit">Read</Button>
             {/* <Link className={classes.link} to="/">
               <Button color="inherit">News</Button>
             </Link> */}
-            <Link className={classes.link} to="/minjoy">
-              <Button color="inherit">5minJoy</Button>
-            </Link>
+            {/* <Link className={classes.link} to="/news-detail">
+              <Button color="inherit">Read</Button>
+            </Link> */}
             <form onSubmit={submitSearch}>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
@@ -143,5 +154,15 @@ function Navbar(props) {
   )
 }
 
+const mapStateToProps = state => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = {
+  setUrl
+}
+
 // export default Navbar;
-export default withRouter(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

@@ -84,7 +84,13 @@ class Home extends Component {
   }
   
   componentDidMount() {
-    this.fetchNews();
+    const { search } = this.props;
+    
+    if (!search) {
+      this.fetchNews();
+    } else {
+      this.searchNews(search);
+    }
   }
 
   render() {

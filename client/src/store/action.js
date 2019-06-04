@@ -4,3 +4,10 @@ export function setLoading(payload = true) {
     payload
   }
 }
+
+export function setUrl(payload) {
+  return {
+    type: 'SET_URL',
+    payload
+  }
+}

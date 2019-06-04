@@ -1,5 +1,6 @@
 const defaultState = {
-  isLoading: false
+  isLoading: false,
+  url: 'https://www.nytimes.com'
 }
 
 function reducer (state = defaultState, action) {
@@ -9,7 +10,13 @@ function reducer (state = defaultState, action) {
         ...state,
         isLoading: action.payload
       }
-
+    
+    case 'SET_URL':
+      return {
+        ...state,
+        url: action.payload
+      }
+      
     default:
       return state
   }

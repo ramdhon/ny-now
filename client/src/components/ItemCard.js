@@ -36,6 +36,7 @@ function ImgMediaCard(props) {
   const { news } = props;
   const { multimedia } = news;
   const classname = classNames(classes.card, classes.my);
+  console.log({multimedia})
 
   function goToDetail() {
     props.history.push('/news-detail');
@@ -56,7 +57,7 @@ function ImgMediaCard(props) {
       >
         <CardActionArea onClick={goToDetail}>
           { 
-            ((multimedia && typeof multimedia === 'string') || (multimedia.length > 0 && typeof multimedia === 'object')) &&
+            ((multimedia && typeof multimedia === 'string') || (multimedia && multimedia.length > 0 && typeof multimedia === 'object')) &&
             <CardMedia
               component="img"
               alt={news.title}
